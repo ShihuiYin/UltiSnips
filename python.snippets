@@ -1,0 +1,107 @@
+snippet he "header" b
+# Copyright `date +%Y`   Shihui Yin    Arizona State University
+
+# Licensed under the Apache License, Version 2.0 (the "License")
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# THIS CODE IS PROVIDED *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+# WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+# MERCHANTABLITY OR NON-INFRINGEMENT.
+# See the Apache 2 License for the specific language governing permissions and
+# limitations under the License.
+
+# Description: ${1:Put some description here, please}
+# Created on `date +%m/%d/%Y`
+
+endsnippet
+
+snippet modify "modify" b
+# Modified on `date +%m/%d/%Y`
+endsnippet
+
+snippet ip "import" b
+import 
+endsnippet
+
+snippet from "from import as" b
+from $1 import $2 as $3
+endsnippet
+
+snippet def "function definition" b
+def ${1:func_name}(${2:arguments}):
+	'''
+	${3: comments}
+	'''
+	$4
+endsnippet
+
+snippet pdb "set pdb debugger trace" b
+import pdb; pdb.set_trace()
+endsnippet
+
+snippet np "import numpy" b
+import numpy as np
+endsnippet
+
+snippet pd "import pandas" b
+import pandas as pd
+endsnippet
+
+snippet sys "import sys" b
+import sys
+endsnippet
+
+snippet sio "import scipy.io" b
+import scipy.io as sio
+endsnippet
+
+snippet args "import argparse" b
+import argparse
+endsnippet
+
+snippet parser "Construct a parser" b
+import argparse
+
+parser = argparse.ArgumentParser(description='${1:description}')
+parser.add_argument('-${2:shortname}', '--${3:longname}', type=${4:str}, default=${5:None}, help='${6:help}')
+$0
+args = parser.parse_args()
+endsnippet
+
+snippet pa "add argument" b
+parser.add_argument('-${1:shortname}', '--${2:longname}', type=${3:str}, default=${4:None}, help='${5:help}')
+endsnippet
+
+snippet for "for loop" b
+for ${1:i} in range($2):
+	$3
+endsnippet
+
+global !p
+def gen_repeat_lines(pattern, start, end):
+	lines = ''
+	print("pattern=%s" % pattern)
+	for i in range(int(start), int(end)):
+		lines += pattern.format(i) + '\n'
+	return lines
+endglobal
+
+post_jump "if snip.tabstop == 0: snip.expand_anon(gen_repeat_lines(snip.tabstops[1].current_text, snip.tabstops[2].current_text, snip.tabstops[3].current_text))"
+snippet repeat "generate repeated text lines" b
+# Below lines generated for "$1" from ${2:0} to ${3:10} (remove if needed)
+
+endsnippet
+
+snippet fw "write a file" b
+with open(${1:filename}, "w+") as f:
+	f.write(${2:lines})
+endsnippet
+
+snippet main "main" b
+if __name__ == "__main__":
+	
+endsnippet

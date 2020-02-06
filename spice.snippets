@@ -1,0 +1,29 @@
+
+global !p
+def gen_repeat_lines(pattern, start, end, step):
+	lines = ''
+	print("pattern=%s" % pattern)
+	if "f'" in pattern: # f-string
+		for i in range(int(start), int(end), int(step)):
+			#lines += eval(pattern)
+			lines += eval(pattern) + '\n'
+	else:
+		for i in range(int(start), int(end), int(step)):
+			lines += pattern.format(i) + '\n'
+	return lines
+endglobal
+
+post_jump "if snip.tabstop == 0: snip.expand_anon(gen_repeat_lines(snip.tabstops[1].current_text, snip.tabstops[2].current_text, snip.tabstops[3].current_text, snip.tabstops[4].current_text))"
+snippet repeat "generate repeated text lines" b
+* Below lines generated for "$1" from ${2:0} to ${3:10} with step ${4:1} (remove if needed)
+
+endsnippet
+snippet [ "square bracket" i
+[$1]
+endsnippet
+snippet ( "bracket" i
+($1)
+endsnippet
+snippet < "square bracket" i
+<$1>
+endsnippet

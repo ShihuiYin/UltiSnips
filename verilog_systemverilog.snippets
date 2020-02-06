@@ -1,0 +1,290 @@
+snippet for "for loop generation" b
+for (${1:i} = 0; $1 < ${2:8}; $1++) begin
+    $3
+end
+endsnippet
+snippet he "header" b
+///////////////////////////////////////////////////////////////////////////////
+//
+// Module: ${1:`!p snip.rv = snip.basename`}
+// Project: ${2:ProjectName}
+// Description: ${3: module description} 
+//
+//
+// Change history: `!v strftime("%m/%d/%Y")` -- Create module
+//
+///////////////////////////////////////////////////////////////////////////////
+`timescale 1ns/1ps
+
+endsnippet
+
+snippet mod "Create a module" b
+module ${1:`!p snip.rv = snip.basename`} (
+    input clk,
+    input reset_n,
+    // inputs
+    $2
+
+    // outputs
+    $3
+);
+$4
+endmodule
+
+endsnippet
+
+snippet dff "create DFFs" b
+always_ff @ (posedge ${1:clk} or negedge ${2:reset_n}) begin
+    if (!$2) begin
+        ${3:Signal_reg}    <=    0;
+    end else begin
+        $3 <= ${4:Signal_wire};
+    end
+end
+$5
+endsnippet
+
+snippet dff_gate "create DFFs" b
+always_ff @ (posedge ${1:clk} or negedge ${2:reset_n}) begin
+    if (!$2) begin
+        ${3:Signal_reg}    <=    0;
+    end else begin
+        if (${4:ena}) begin
+            $3 <= ${4:Signal_wire};
+        end
+    end
+end
+$5
+endsnippet
+
+
+snippet comb "create combinational logic" b
+always_comb begin
+    $1
+end
+$2
+endsnippet
+
+snippet latch "create latch logic" b
+always_latch begin
+    if (${1:ena}) begin
+        ${2:D} <= ${3:Q};
+    end
+end
+$4
+endsnippet
+
+snippet FSM2b "2b finite state machine" b
+localparam     ${1:IDLE}    = 2'b00,
+            ${2:STA1}    = 2'b01,
+            ${3:STA2}    = 2'b10,
+            ${4:STA3}    = 2'b11;
+logic    [1:0]    State;
+logic    [1:0]    State_NExt;
+
+always_comb begin
+    State_Next    = State;
+    case (State)
+        $1:    $5
+        $2:    $6
+        $3:    $7
+        $4: $8
+    endcase
+end
+
+always_ff @ (posedge clk or ${9:reset_n}) begin
+    if (!$9) begin
+        State    <=    $1;
+    end else begin
+        State    <=    State_Next;
+    end
+end
+${10}
+endsnippet
+
+snippet FSM3b "3b finite state machine" b
+localparam     ${1:IDLE}    = 3'b000,
+            ${2:STA1}    = 3'b001,
+            ${3:STA2}    = 3'b010,
+            ${4:STA3}    = 3'b011;
+            ${5:STA4}    = 3'b100,
+            ${6:STA5}    = 3'b101,
+            ${7:STA6}    = 3'b110;
+            ${8:STA7}    = 3'b111;
+logic    [1:0]    State;
+logic    [1:0]    State_NExt;
+
+always_comb begin
+    State_Next    = State;
+    case (State)
+        $1:    
+        $2:    
+        $3:    
+        $4: 
+        $5:    
+        $6:    
+        $7:    
+        $8:    
+    endcase
+end
+
+always_ff @ (posedge clk or ${9:reset_n}) begin
+    if (!$9) begin
+        State    <=    $1;
+    end else begin
+        State    <=    State_Next;
+    end
+end
+${10}
+endsnippet
+
+snippet if "if statement" 
+if (${1:condition}) begin
+    ${2:statement}
+end
+endsnippet
+
+snippet ife "if-else statement" 
+if (${1:condition}) begin
+    ${2:statement}
+end else begin
+    ${3:statement}
+end
+endsnippet
+
+snippet gen "generate statement" b
+generate
+    $1
+endgenerate
+endsnippet
+
+snippet task "task statement" b
+task ${1:taskname}($2);
+    $3;
+endtask
+endsnippet
+
+snippet ini "initial statements" b
+initial begin
+    $1
+end
+endsnippet
+
+snippet vcd "dump vcd files" b
+initial begin
+    $dumpfile("${1:waves}.vcd");
+    $dumpvars(0, ${2:tb});
+end
+$3
+endsnippet
+
+snippet shm "dump shm files" b
+initial begin
+    $shm_open("${1:waves}.shm");
+    $shm_probe(${2:tb}, "ascm");
+end
+$3
+endsnippet
+
+snippet tb "testbench" b
+module tb();
+// Parameters
+parameter    CLK_PERIOD = 2;
+parameter    SIM_PERIOD = 100*CLK_PERIOD;
+
+// Registers
+
+// Wires
+
+// instances
+
+// initial blocks
+initial begin
+    // initialize inputs
+
+    // start simulation
+
+    #(SIM_PERIOD)
+    $finish;
+end
+
+endmodule
+endsnippet
+
+snippet fw "fwrite statement" b
+$fwrite(${1:fid}, "${2:%d\n}", ${3:data});
+endsnippet
+
+snippet fow "fopen for write" b
+${1:fid} = $fopen("${2:data.txt}", "w");
+endsnippet
+
+snippet fr "fopen for read" b
+${1:fid} = $fopen("${2:data.txt}", "r");
+endsnippet
+
+snippet fc "fclose statement" b
+$fclose(${1:fid});
+endsnippet
+
+snippet padout "output pads definition for GF28" b
+SRC_BI_SDS_33V_STB PADRING_${1:clk_out} (.I($1), .OEN(tielo[$2]), .PAD(PAD_$1), .C(), .REN(tielo[$3]), .SMT(tiehi[$7]), .SR(tiehi[$8]), .P1(tielo[$4]), .P2(tielo[$5]), .E1(tielo[$6]), .E2(tiehi[$9]), .POS(tiehi[${10}]), .HVPS_P(HVPS_P), .HVPS_N(HVPS_N), .POC_P(POC_P), .POC_N(POC_N), .VREFP(VREFP), .VREFN(VREFN), .VDFS(VDFS), .DVDD(DVDD), .DVSS(DVSS), .VDD(VDD), .VSS(VSS));
+endsnippet
+
+global !p
+def gen_repeat_lines(pattern, start, end):
+    lines = ''
+    for i in range(int(start), int(end)):
+        lines += eval(pattern) + '\n'
+    return lines
+def gen_repeat_lines_old(pattern, start, end):
+    lines = ''
+    for i in range(int(start), int(end)):
+        lines += pattern.format(i) + '\n'
+    return lines
+endglobal
+
+post_jump "if snip.tabstop == 0: snip.expand_anon(gen_repeat_lines(snip.tabstops[1].current_text, snip.tabstops[2].current_text, snip.tabstops[3].current_text))"
+snippet repeat "generate repeated text lines" b
+// Below lines generated by UltiSnips for "$1" from ${2:0} to ${3:10}
+
+endsnippet
+
+global !p
+def gen_delay_lines(signal_list, taps):
+    lines = ''
+    signal_list = signal_list.split(',')
+    for signal in signal_list:
+        for i in range(int(taps)):
+            lines += "logic %s_d%d;\n" % (signal, i+1)
+    lines += "always_ff @ (posedge clk or negedge reset_n) begin\n"
+    lines += "    if (!reset_n) begin\n"
+    for signal in signal_list:
+        for i in range(int(taps)):
+            lines += "        %s_d%d <= 0;\n" % (signal, i+1)
+    lines += "    end else begin\n"
+    for signal in signal_list:
+        for i in range(int(taps)):
+            if i == 0:
+                lines += "        %s_d%d <= %s;\n" % (signal, i+1, signal)
+            else:
+                lines += "        %s_d%d <= %s_d%d;\n" % (signal, i+1, signal, i)
+    lines += "    end\n"
+    lines += "end\n"
+    return lines
+    pass
+endglobal
+
+post_jump "if snip.tabstop == 0: snip.expand_anon(gen_delay_lines(snip.tabstops[1].current_text, snip.tabstops[2].current_text))"
+snippet delay "delay lines" b
+// Below lines generated by UltiSnips for delaying signal(s) "$1" for ${2:1} tap(s)
+
+endsnippet
+
+snippet in "input logic" b
+input logic 
+endsnippet
+
+snippet out "output logic" b
+output logic 
+endsnippet
